@@ -1,8 +1,19 @@
 import csv
+import glob
+import os
+
+
+# ファイル名の更生
+path = "./data/*"
+list = glob.glob(path)
+for file in list:
+    file_rename = file.replace("'", "").replace("'", "")
+    os.rename(file,file_rename)
+print(list)
 
 # 訓練データの格納
 data = []
-with open("train.csv", "r", encoding="utf-8_sig") as f:
+with open("data/train.csv", "r", encoding="utf-8_sig") as f:
     reader = csv.reader(f)
     header = next(reader)
 
@@ -11,7 +22,7 @@ with open("train.csv", "r", encoding="utf-8_sig") as f:
 
 # 休日データの格納
 holiday = []
-with open("holidays_in_japan.csv", "r", encoding="utf-8_sig") as f:
+with open("data/holidays_in_japan.csv", "r", encoding="utf-8_sig") as f:
     reader = csv.reader(f)
     header = next(reader)
 
@@ -20,7 +31,7 @@ with open("holidays_in_japan.csv", "r", encoding="utf-8_sig") as f:
 
 # スタジアム容量の格納
 stadium = {}
-with open("stadium_capacity_mapping.csv", "r", encoding="utf_8_sig") as f:
+with open("data/stadium_capacity_mapping.csv", "r", encoding="utf_8_sig") as f:
     reader = csv.reader(f)
     header = next(reader)
 
@@ -32,18 +43,15 @@ def check_holiday(day):
     if day in holiday:
         return 1
     else:
-        return 0
+        return 10
 
 
 def check_kick_off_time(time):
-    if int(time[3:5]) > 29:
-        return float(time[0:2]) + 0.5
-    else:
-        return float(time[0:2])
+    return int(time[0:2],2)
 
 
 def check_section_or_round(section_or_round):
-    return int(section_or_round[1:3])
+    return int(section_or_round[1:3],2)
 
 
 def make_data():
